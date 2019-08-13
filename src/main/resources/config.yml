@@ -1,0 +1,5 @@
+host: "0.0.0.0"
+port: 19132
+log-level: 1
+motd: "wodeLobby"
+sub-mote: "lightweight lobby server"

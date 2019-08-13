@@ -1,0 +1,21 @@
+{
+    "title": "Please choose a server",
+    "content": "",
+    "buttons": [
+        {
+            "text": "localhost Server",
+            "host": "127.0.0.1",
+            "port": 19132
+        },
+        {
+            "text": "NukkitX Server",
+            "host": "play.nukkitx.com",
+            "port": 19132
+        },
+        {
+            "text": "EaseCation Server",
+            "host": "play.easecation.net",
+            "port": 19132
+        }
+    ]
+}
