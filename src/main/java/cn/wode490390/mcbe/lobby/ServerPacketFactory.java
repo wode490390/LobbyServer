@@ -1,8 +1,8 @@
 package cn.wode490390.mcbe.lobby;
 
-import com.flowpowered.math.vector.Vector2f;
-import com.flowpowered.math.vector.Vector3f;
-import com.flowpowered.math.vector.Vector3i;
+import com.nukkitx.math.vector.Vector2f;
+import com.nukkitx.math.vector.Vector3f;
+import com.nukkitx.math.vector.Vector3i;
 import com.nukkitx.protocol.bedrock.BedrockPacketCodec;
 import com.nukkitx.protocol.bedrock.data.GamePublishSetting;
 import com.nukkitx.protocol.bedrock.packet.*;
@@ -13,23 +13,19 @@ public class ServerPacketFactory {
 
     public static final BedrockPacketCodec CODEC = Bedrock_v361.V361_CODEC;
 
-    private static final Vector2f vector2f = new Vector2f();
-    private static final Vector3f vector3f = new Vector3f();
-    private static final Vector3i vector3i = new Vector3i();
-
     private static final StartGamePacket startGamePacket = new StartGamePacket();
     static {
         startGamePacket.setUniqueEntityId(0);
         startGamePacket.setRuntimeEntityId(0);
         startGamePacket.setPlayerGamemode(0);
-        startGamePacket.setPlayerPosition(vector3f);
-        startGamePacket.setRotation(vector2f);
+        startGamePacket.setPlayerPosition(Vector3f.ZERO);
+        startGamePacket.setRotation(Vector2f.ZERO);
         startGamePacket.setSeed(0);
         startGamePacket.setDimensionId(0);
         startGamePacket.setGeneratorId(0);
         startGamePacket.setLevelGamemode(0);
         startGamePacket.setDifficulty(0);
-        startGamePacket.setDefaultSpawn(vector3i);
+        startGamePacket.setDefaultSpawn(Vector3i.ZERO);
         startGamePacket.setAcheivementsDisabled(true);
         startGamePacket.setTime(0);
         startGamePacket.setEduLevel(false);
