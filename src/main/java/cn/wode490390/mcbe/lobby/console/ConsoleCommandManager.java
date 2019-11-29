@@ -1,5 +1,6 @@
-package cn.wode490390.mcbe.lobby;
+package cn.wode490390.mcbe.lobby.console;
 
+import cn.wode490390.mcbe.lobby.Main;
 import com.nukkitx.protocol.bedrock.BedrockServerSession;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
@@ -9,13 +10,13 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class ConsoleCommandManager {
 
-    //private final Main main;
+    private final Main main;
 
     private final Map<String, ConsoleCommand> commandMap;
 
     public ConsoleCommandManager(Main main) {
-        //this.main = main;
-        commandMap = new HashMap<String, ConsoleCommand>(){
+        this.main = main;
+        this.commandMap = new HashMap<String, ConsoleCommand>(){
             {
                 put("stop", (args) -> {
                     log.info("Stopping the server...");
@@ -55,6 +56,6 @@ public class ConsoleCommandManager {
     }
 
     public Map<String, ConsoleCommand> getCommandMap() {
-        return commandMap;
+        return this.commandMap;
     }
 }

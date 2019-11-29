@@ -1,5 +1,6 @@
-package cn.wode490390.mcbe.lobby;
+package cn.wode490390.mcbe.lobby.network;
 
+import cn.wode490390.mcbe.lobby.Main;
 import com.nukkitx.protocol.bedrock.BedrockServerSession;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import com.nukkitx.protocol.bedrock.packet.*;
@@ -19,15 +20,21 @@ public class ServerPacketHandler implements BedrockPacketHandler {
     }
 
     @Override
-    public boolean handle(LoginPacket packet) {
+    public boolean handle(LoginPacket packet) { // TODO: whitelist
+        this.session.setPacketCodec(ServerPacketFactory.CODEC);
         int protocol = packet.getProtocolVersion();
         int accept = ServerPacketFactory.CODEC.getProtocolVersion();
         if (protocol > accept) {
-            //ignore?
+            this.session.sendPacket(ServerPacketFactory.getPlayStatusPacket2());
+            if (protocol < 137) {
+                this.session.sendPacketImmediately(ServerPacketFactory.createDisconnectPacket("disconnectionScreen.outdatedServer"));
+            }
         } else if (protocol < accept) {
-            //ignore?
+            this.session.sendPacket(ServerPacketFactory.getPlayStatusPacket1());
+            if (protocol < 137) {
+                this.session.sendPacketImmediately(ServerPacketFactory.createDisconnectPacket("disconnectionScreen.outdatedClient"));
+            }
         } else {
-            this.session.setPacketCodec(ServerPacketFactory.CODEC);
             this.session.sendPacket(ServerPacketFactory.getPlayStatusPacket0());
             this.session.sendPacket(ServerPacketFactory.getResourcePacksInfoPacket());
             log.info(this.session.getAddress() + " logged in");
@@ -40,13 +47,13 @@ public class ServerPacketHandler implements BedrockPacketHandler {
         switch (packet.getStatus()) {
             case HAVE_ALL_PACKS:
                 this.session.sendPacket(ServerPacketFactory.getResourcePackStackPacket());
-                break;
+                return true;
             case COMPLETED:
                 this.session.sendPacket(ServerPacketFactory.getStartGamePacket());
-                this.session.sendPacket(ServerPacketFactory.getPlayStatusPacket3());
-                break;
+                this.session.sendPacket(ServerPacketFactory.getBiomeDefinitionListPacket());
+                return true;
         }
-        return true;
+        return false;
     }
 
     @Override
@@ -61,17 +68,31 @@ public class ServerPacketHandler implements BedrockPacketHandler {
         if (packet.getFormId() == 0) {
             try {
                 int id = Integer.parseInt(packet.getFormData().trim());
-                if (id == main.getMenu().getButtons().size()) {
+                if (id == this.main.getMenu().getButtons().size()) {
                     this.session.sendPacket(ServerPacketFactory.createDisconnectPacket("Bye :)"));
                 }
-                Map<String, Object> button = main.getMenu().getButtons().get(id);
+                Map<String, Object> button = this.main.getMenu().getButtons().get(id);
                 InetSocketAddress address = new InetSocketAddress(String.valueOf(button.get("host")), ((Number) button.get("port")).intValue());
                 this.session.sendPacket(ServerPacketFactory.createTransferPacket(address));
                 log.info("{} has been transferred to {}", this.session.getAddress(), address);
             } catch (Exception e) {
                 this.session.sendPacket(ServerPacketFactory.createModalFormRequestPacket());
             }
+            return true;
         }
+        return false;
+    }
+
+    @Override
+    public boolean handle(RequestChunkRadiusPacket packet) {
+        this.session.sendPacket(ServerPacketFactory.getChunkRadiusUpdatedPacket1());
+        this.session.sendPacket(ServerPacketFactory.getPlayStatusPacket3());
+        return true;
+    }
+
+    @Override
+    public boolean handle(MovePlayerPacket packet) {
+        this.session.sendPacket(ServerPacketFactory.createModalFormRequestPacket());
         return true;
     }
 }

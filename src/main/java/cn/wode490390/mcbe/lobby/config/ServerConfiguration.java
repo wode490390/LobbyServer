@@ -1,4 +1,4 @@
-package cn.wode490390.mcbe.lobby;
+package cn.wode490390.mcbe.lobby.config;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -30,19 +30,19 @@ public class ServerConfiguration {
     @JsonProperty("sub-motd")
     private String submotd = "lightweight lobby server";
 
-    InetSocketAddress getServerAddress() {
-        return new InetSocketAddress(host, port);
+    public InetSocketAddress getServerAddress() {
+        return new InetSocketAddress(this.host, this.port);
     }
 
-    int getLogLevel() {
-        return logLevel;
+    public int getLogLevel() {
+        return this.logLevel;
     }
 
-    String getMotd() {
-        return motd;
+    public String getMotd() {
+        return this.motd;
     }
 
-    String getSubMotd() {
-        return submotd;
+    public String getSubMotd() {
+        return this.submotd;
     }
 }

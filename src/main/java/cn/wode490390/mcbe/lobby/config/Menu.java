@@ -1,4 +1,4 @@
-package cn.wode490390.mcbe.lobby;
+package cn.wode490390.mcbe.lobby.config;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -31,13 +31,9 @@ public class Menu {
     @JsonProperty("buttons")
     private List<Map<String, Object>> buttons = new ArrayList<>();
 
-    Menu() {
-
-    }
-
-    String toForm() {
+    public String toForm() {
         ArrayNode array = JSON_MAPPER.createArrayNode();
-        buttons.forEach((map) -> {
+        this.buttons.forEach((map) -> {
             array.add(JSON_MAPPER.createObjectNode()
                     .put("text", String.valueOf(map.get("text"))));
         });
@@ -45,8 +41,8 @@ public class Menu {
                 .put("text", "Exit"));
         ObjectNode node = JSON_MAPPER.createObjectNode()
                 .put("type", "form")
-                .put("title", title)
-                .put("content", content)
+                .put("title", this.title)
+                .put("content", this.content)
                 .set("buttons", array);
         try {
             return JSON_MAPPER.writeValueAsString(node);
@@ -55,7 +51,7 @@ public class Menu {
         }
     }
 
-    List<Map<String, Object>> getButtons() {
-        return buttons;
+    public List<Map<String, Object>> getButtons() {
+        return this.buttons;
     }
 }

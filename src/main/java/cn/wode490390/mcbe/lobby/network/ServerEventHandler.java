@@ -1,5 +1,6 @@
-package cn.wode490390.mcbe.lobby;
+package cn.wode490390.mcbe.lobby.network;
 
+import cn.wode490390.mcbe.lobby.Main;
 import com.nukkitx.protocol.bedrock.BedrockPong;
 import com.nukkitx.protocol.bedrock.BedrockServerEventHandler;
 import com.nukkitx.protocol.bedrock.BedrockServerSession;
@@ -23,13 +24,13 @@ public class ServerEventHandler implements BedrockServerEventHandler {
 
     private final Main main;
 
-    ServerEventHandler(Main main) {
+    public ServerEventHandler(Main main) {
         this.main = main;
     }
 
     @Override
     public boolean onConnectionRequest(InetSocketAddress address) {
-        return true; // TODO: whitelist
+        return true; // TODO: blacklist
     }
 
     @Override
@@ -40,11 +41,11 @@ public class ServerEventHandler implements BedrockServerEventHandler {
     @Override
     public void onSessionCreation(BedrockServerSession session) {
         InetSocketAddress address = session.getAddress();
-        session.addDisconnectHandler((reason) -> {
-            main.getSessions().remove(address);
+        session.addDisconnectHandler(reason -> {
+            this.main.getSessions().remove(address);
             log.info("{} logged out", address);
         });
-        session.setPacketHandler(new ServerPacketHandler(main, session));
-        main.getSessions().put(address, session);
+        session.setPacketHandler(new ServerPacketHandler(this.main, session));
+        this.main.getSessions().put(address, session);
     }
 }

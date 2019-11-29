@@ -1,5 +1,11 @@
 package cn.wode490390.mcbe.lobby;
 
+import cn.wode490390.mcbe.lobby.config.Menu;
+import cn.wode490390.mcbe.lobby.config.ServerConfiguration;
+import cn.wode490390.mcbe.lobby.console.Console;
+import cn.wode490390.mcbe.lobby.console.ConsoleCommandManager;
+import cn.wode490390.mcbe.lobby.network.ServerEventHandler;
+import cn.wode490390.mcbe.lobby.network.ServerPacketFactory;
 import com.nukkitx.protocol.bedrock.BedrockServer;
 import com.nukkitx.protocol.bedrock.BedrockServerSession;
 import io.netty.util.ResourceLeakDetector;
@@ -137,23 +143,23 @@ public class Main {
     private Main() throws IOException {
         instance = this;
 
-        console = new Console(this);
-        consoleThread = new Thread() {
+        this.console = new Console(this);
+        this.consoleThread = new Thread() {
             @Override
             public void run() {
                 console.start();
             }
         };
-        consoleThread.start();
+        this.consoleThread.start();
 
         log.info("Loading configuration...");
         Path configPath = Paths.get(".").resolve("config.yml");
         if (Files.notExists(configPath) || !Files.isRegularFile(configPath)) {
             Files.copy(Main.class.getClassLoader().getResourceAsStream("config.yml"), configPath, StandardCopyOption.REPLACE_EXISTING);
         }
-        configuration = ServerConfiguration.load(configPath);
+        this.configuration = ServerConfiguration.load(configPath);
 
-        int level = configuration.getLogLevel();
+        int level = this.configuration.getLogLevel();
         switch (level) {
             case 1:
                 setLogLevel(Level.INFO);
@@ -169,78 +175,80 @@ public class Main {
                 }
         }
 
-        commandManager = new ConsoleCommandManager(this);
+        this.commandManager = new ConsoleCommandManager(this);
 
         log.info("Loading menu...");
         Path menuPath = Paths.get(".").resolve("menu.json");
         if (Files.notExists(menuPath) || !Files.isRegularFile(menuPath)) {
             Files.copy(Main.class.getClassLoader().getResourceAsStream("menu.json"), menuPath, StandardCopyOption.REPLACE_EXISTING);
         }
-        menu = Menu.load(menuPath);
+        this.menu = Menu.load(menuPath);
+
+        ServerPacketFactory.init();
 
         try {
-            bindingAddress = new InetSocketAddress(serverHost, serverPort);
+            this.bindingAddress = new InetSocketAddress(serverHost, serverPort);
         } catch (Exception ignore) {
 
         }
-        if (bindingAddress == null) {
-            bindingAddress = configuration.getServerAddress();
+        if (this.bindingAddress == null) {
+            this.bindingAddress = this.configuration.getServerAddress();
         }
 
-        server = new BedrockServer(bindingAddress);
-        server.setHandler(new ServerEventHandler(this));
-        server.bind().join();
+        this.server = new BedrockServer(this.bindingAddress);
+        this.server.setHandler(new ServerEventHandler(this));
+        this.server.bind().join();
 
-        log.info("Server started on {}", server.getBindAddress());
-        loop();
+        log.info("Server started on {}", this.server.getBindAddress());
+        this.loop();
     }
 
     public ServerConfiguration getConfiguration() {
-        return configuration;
+        return this.configuration;
     }
 
     public ConsoleCommandManager getCommandManager() {
-        return commandManager;
+        return this.commandManager;
     }
 
     public Map<InetSocketAddress, BedrockServerSession> getSessions() {
-        return sessions;
+        return this.sessions;
     }
 
     public BedrockServer getServer() {
-        return server;
+        return this.server;
     }
 
     public Menu getMenu() {
-        return menu;
+        return this.menu;
     }
 
     private void loop() {
-        while (running.get()) {
+        while (this.running.get()) {
             try {
                 synchronized (this) {
-                    wait();
+                    this.wait();
                 }
             } catch (InterruptedException ignore) {
 
             }
         }
 
-        server.close();
+        this.server.close();
 
-        consoleThread.interrupt();
+        this.consoleThread.interrupt();
     }
 
     public void shutdown() {
-        if (running.compareAndSet(true, false)) {
+        if (this.running.compareAndSet(true, false)) {
             synchronized (this) {
-                notify();
+                this.notify();
             }
         }
     }
 
     public boolean isRunning() {
-        return running.get();
+        return this.running.get();
     }
 
     public static Main getInstance() {

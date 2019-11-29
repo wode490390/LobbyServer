@@ -1,4 +1,4 @@
-package cn.wode490390.mcbe.lobby;
+package cn.wode490390.mcbe.lobby.console;
 
 public interface ConsoleCommand {
 
