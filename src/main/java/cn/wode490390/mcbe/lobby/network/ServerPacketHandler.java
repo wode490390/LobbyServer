@@ -37,6 +37,7 @@ public class ServerPacketHandler implements BedrockPacketHandler {
         } else {
             this.session.sendPacket(ServerPacketFactory.getPlayStatusPacket0());
             this.session.sendPacket(ServerPacketFactory.getResourcePacksInfoPacket());
+            this.session.sendPacket(ServerPacketFactory.getNetworkSettingsPacket1());
             log.info(this.session.getAddress() + " logged in");
         }
         return true;

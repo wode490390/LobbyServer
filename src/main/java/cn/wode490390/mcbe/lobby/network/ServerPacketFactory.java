@@ -13,7 +13,7 @@ import com.nukkitx.nbt.tag.Tag;
 import com.nukkitx.protocol.bedrock.BedrockPacketCodec;
 import com.nukkitx.protocol.bedrock.data.GamePublishSetting;
 import com.nukkitx.protocol.bedrock.packet.*;
-import com.nukkitx.protocol.bedrock.v388.Bedrock_v388;
+import com.nukkitx.protocol.bedrock.v389.Bedrock_v389;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
 import java.net.InetSocketAddress;
@@ -22,11 +22,7 @@ import java.util.Base64;
 
 public class ServerPacketFactory {
 
-    public static final BedrockPacketCodec CODEC = Bedrock_v388.V388_CODEC;
-
-    public static void init() {
-        //NOOP
-    }
+    public static final BedrockPacketCodec CODEC = Bedrock_v389.V389_CODEC;
 
     private static Tag<?> bytes2Nbt(byte[] bytes) {
         try (NBTInputStream reader = NbtUtils.createNetworkReader(new ByteBufInputStream(Unpooled.wrappedBuffer(bytes)))) {
@@ -49,7 +45,7 @@ public class ServerPacketFactory {
         startGamePacket.setLevelGamemode(0);
         startGamePacket.setDifficulty(0);
         startGamePacket.setDefaultSpawn(Vector3i.ZERO);
-        startGamePacket.setAcheivementsDisabled(true);
+        startGamePacket.setAchievementsDisabled(true);
         startGamePacket.setTime(0);
         startGamePacket.setEduEditionOffers(0);
         startGamePacket.setEduFeaturesEnabled(false);
@@ -187,5 +183,13 @@ public class ServerPacketFactory {
     }
     public static BiomeDefinitionListPacket getBiomeDefinitionListPacket() {
         return biomeDefinitionListPacket;
+    }
+
+    private static final NetworkSettingsPacket networkSettingsPacket1 = new NetworkSettingsPacket();
+    static {
+        networkSettingsPacket1.setCompressionThresholdByteSize(1);
+    }
+    public static NetworkSettingsPacket getNetworkSettingsPacket1() {
+        return networkSettingsPacket1;
     }
 }

@@ -184,7 +184,7 @@ public class Main {
         }
         this.menu = Menu.load(menuPath);
 
-        ServerPacketFactory.init();
+        log.info("Starting Minecraft: Bedrock Edition server version {} (protocol version {})", ServerPacketFactory.CODEC.getMinecraftVersion(), ServerPacketFactory.CODEC.getProtocolVersion());
 
         try {
             this.bindingAddress = new InetSocketAddress(serverHost, serverPort);
@@ -200,6 +200,7 @@ public class Main {
         this.server.bind().join();
 
         log.info("Server started on {}", this.server.getBindAddress());
+
         this.loop();
     }
 

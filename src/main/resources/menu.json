@@ -14,7 +14,7 @@
         },
         {
             "text": "EaseCation Server",
-            "host": "play.easecation.net",
+            "host": "ntest.easecation.net",
             "port": 19132
         }
     ]
