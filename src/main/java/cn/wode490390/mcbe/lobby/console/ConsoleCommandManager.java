@@ -2,10 +2,11 @@ package cn.wode490390.mcbe.lobby.console;
 
 import cn.wode490390.mcbe.lobby.Main;
 import com.nukkitx.protocol.bedrock.BedrockServerSession;
+import lombok.extern.log4j.Log4j2;
+
 import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
-import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 public class ConsoleCommandManager {

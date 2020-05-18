@@ -12,17 +12,19 @@ import com.nukkitx.nbt.tag.ListTag;
 import com.nukkitx.nbt.tag.Tag;
 import com.nukkitx.protocol.bedrock.BedrockPacketCodec;
 import com.nukkitx.protocol.bedrock.data.GamePublishSetting;
+import com.nukkitx.protocol.bedrock.data.PlayerPermission;
 import com.nukkitx.protocol.bedrock.packet.*;
-import com.nukkitx.protocol.bedrock.v389.Bedrock_v389;
+import com.nukkitx.protocol.bedrock.v390.Bedrock_v390;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
+
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Base64;
 
 public class ServerPacketFactory {
 
-    public static final BedrockPacketCodec CODEC = Bedrock_v389.V389_CODEC;
+    public static final BedrockPacketCodec CODEC = Bedrock_v390.V390_CODEC;
 
     private static Tag<?> bytes2Nbt(byte[] bytes) {
         try (NBTInputStream reader = NbtUtils.createNetworkReader(new ByteBufInputStream(Unpooled.wrappedBuffer(bytes)))) {
@@ -60,7 +62,7 @@ public class ServerPacketFactory {
         startGamePacket.setTexturePacksRequired(false);
         startGamePacket.setBonusChestEnabled(false);
         startGamePacket.setStartingWithMap(false);
-        startGamePacket.setDefaultPlayerPermission(1);
+        startGamePacket.setDefaultPlayerPermission(PlayerPermission.MEMBER);
         startGamePacket.setServerChunkTickRange(4);
         startGamePacket.setBehaviorPackLocked(false);
         startGamePacket.setResourcePackLocked(false);

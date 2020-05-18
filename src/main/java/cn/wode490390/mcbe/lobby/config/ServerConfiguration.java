@@ -3,6 +3,7 @@ package cn.wode490390.mcbe.lobby.config;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.InetSocketAddress;
