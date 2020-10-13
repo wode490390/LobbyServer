@@ -11,7 +11,7 @@ import java.net.InetSocketAddress;
 @Log4j2
 public class ServerEventHandler implements BedrockServerEventHandler {
 
-    private static BedrockPong pong = new BedrockPong();
+    private static final BedrockPong pong = new BedrockPong();
     static {
         pong.setEdition("MCPE");
         pong.setMotd(Main.getInstance().getConfiguration().getMotd());

@@ -97,4 +97,10 @@ public class ServerPacketHandler implements BedrockPacketHandler {
         this.session.sendPacket(ServerPacketFactory.createModalFormRequestPacket());
         return true;
     }
+
+    @Override
+    public boolean handle(PacketViolationWarningPacket packet) {
+        log.debug(this.session.getAddress() + " " + packet);
+        return true;
+    }
 }

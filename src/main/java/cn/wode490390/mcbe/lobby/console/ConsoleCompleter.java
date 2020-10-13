@@ -29,14 +29,14 @@ public class ConsoleCompleter implements Completer {
             SortedSet<String> names = new TreeSet<>();
             addCandidates(names::add);
             names.stream()
-                    .filter(match -> !(!match.toLowerCase().startsWith(parsedLine.word())))
+                    .filter(match -> match.toLowerCase().startsWith(parsedLine.word()))
                     .forEachOrdered(match -> candidates.add(new Candidate(match)));
         } else if (parsedLine.wordIndex() > 0 && !parsedLine.word().isEmpty()) {
             String word = parsedLine.word();
             SortedSet<String> names = new TreeSet<>();
             names.add(this.main.getServer().getBindAddress().toString());
             names.stream()
-                    .filter(match -> !(!match.toLowerCase().startsWith(word.toLowerCase())))
+                    .filter(match -> match.toLowerCase().startsWith(word.toLowerCase()))
                     .forEachOrdered(match -> candidates.add(new Candidate(match)));
         }
     }
@@ -44,6 +44,6 @@ public class ConsoleCompleter implements Completer {
     private void addCandidates(Consumer<String> commandConsumer) {
         this.main.getCommandManager().getCommandMap().keySet().stream()
                 .filter(command -> !command.contains(":"))
-                .forEachOrdered(command -> commandConsumer.accept(command));
+                .forEachOrdered(commandConsumer);
     }
 }
