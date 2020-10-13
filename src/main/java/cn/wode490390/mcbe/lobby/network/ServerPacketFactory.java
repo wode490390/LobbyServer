@@ -16,7 +16,7 @@ import com.nukkitx.protocol.bedrock.data.GameType;
 import com.nukkitx.protocol.bedrock.data.PlayerPermission;
 import com.nukkitx.protocol.bedrock.data.SpawnBiomeType;
 import com.nukkitx.protocol.bedrock.packet.*;
-import com.nukkitx.protocol.bedrock.v407.Bedrock_v407;
+import com.nukkitx.protocol.bedrock.v408.Bedrock_v408;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
 
@@ -25,7 +25,7 @@ import java.util.Base64;
 
 public class ServerPacketFactory {
 
-    public static final BedrockPacketCodec CODEC = Bedrock_v407.V407_CODEC;
+    public static final BedrockPacketCodec CODEC = Bedrock_v408.V408_CODEC;
 
     private static Object bytes2Nbt(byte[] bytes) {
         try (NBTInputStream reader = NbtUtils.createNetworkReader(new ByteBufInputStream(Unpooled.wrappedBuffer(bytes)))) {
