@@ -65,7 +65,7 @@
         <dependency>
             <groupId>com.nukkitx.protocol</groupId>
             <artifactId>bedrock-v408</artifactId>
-            <version>2.6.1-SNAPSHOT</version>
+            <version>2.9.6-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
